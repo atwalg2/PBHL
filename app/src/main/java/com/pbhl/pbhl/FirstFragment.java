@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
 /**
@@ -22,6 +24,10 @@ public class FirstFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+
+    LinearLayout item;
+    String[] teams = {"Sunnys team", "Deeps Team", "Joes Team", "Buddys Team","Sunnys team", "Deeps Team", "Joes Team", "Buddys Team","Sunnys team", "Deeps Team", "Joes Team", "Buddys Team","Sunnys team", "Deeps Team", "Joes Team", "Buddys Team","Sunnys team", "Deeps Team", "Joes Team", "Buddys Team"};
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -45,15 +51,24 @@ public class FirstFragment extends Fragment {
     public static FirstFragment newInstance(String param1, String param2) {
         FirstFragment fragment = new FirstFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
+//        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        FrameLayout myBox = (FrameLayout) getLayoutInflater();
+//        FrameLayout myBox = (FrameLayout) getView().findViewById(R.id.league_box_frame_layout);
+//        TextView text = (TextView) myBox.findViewById(R.id.left_team);
+//        text.setText("FUCK");
+
+//        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/abc.ttf");
+//        tx.setTypeface(custom_font);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -63,8 +78,24 @@ public class FirstFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_first, container, false);
+
+        item = (LinearLayout) root.findViewById(R.id.games_container);
+
+        for(int i=0; i<teams.length;i++) {
+            View child = getActivity().getLayoutInflater().inflate(R.layout.league_box, null);
+            TextView left = (TextView) child.findViewById(R.id.left_team);
+            TextView right = (TextView) child.findViewById(R.id.right_team);
+
+            left.setText(teams[i]);
+            i++;
+            right.setText(teams[i]);
+
+            item.addView(child);
+        }
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first, container, false);
+        return root;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

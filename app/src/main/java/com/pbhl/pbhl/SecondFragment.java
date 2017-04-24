@@ -7,12 +7,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SecondFragment.OnFragmentInteractionListener} interface
+ * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link SecondFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -22,6 +26,21 @@ public class SecondFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+
+    LinearLayout item;
+
+    Team T1 = new Team("HENRY SINGER");
+    Team T2 = new Team("ALL INDIA");
+    Team T3 = new Team("SUNNY VALLEY HOMES");
+    Team T4 = new Team("PIZZA 38");
+    Team T5 = new Team("ROYAL STAR PROPERTIES");
+    Team T6 = new Team("VACUUMS R US");
+    Team T7 = new Team("EYES ON 34TH");
+    Team T8 = new Team("SOUTHTOWN HYUNDAI");
+
+    Team[] teams = {T1,T2,T3,T4,T5,T6,T7,T8};
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -63,8 +82,20 @@ public class SecondFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_second, container, false);
+
+        item = (LinearLayout) root.findViewById(R.id.standings_container);
+
+        for(int i=0; i<teams.length;i++) {
+            View child = getActivity().getLayoutInflater().inflate(R.layout.standings_box, null);
+            TextView name = (TextView) child.findViewById(R.id.standings_team_name);
+
+            name.setText(teams[i].getTeamName());
+
+            item.addView(child);
+        }
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_second, container, false);
+        return root;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

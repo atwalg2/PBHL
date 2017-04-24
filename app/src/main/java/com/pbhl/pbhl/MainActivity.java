@@ -11,13 +11,31 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterAuthClient;
+
+import java.io.Console;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by Gurbz on 2017-04-13.
  */
 
 public class MainActivity extends AppCompatActivity implements FirstFragment.OnFragmentInteractionListener, SecondFragment.OnFragmentInteractionListener, ThirdFragment.OnFragmentInteractionListener {
+
+    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
+    private static final String TWITTER_KEY = "kgq5U0BNanDMNlBtQAw7myyV3";
+    private static final String TWITTER_SECRET = "3fhXEN35jdQDoPk0AZHoDKnYmZUDez6MDQ8mNZ6AYYeRcUeN7T";
+    TwitterAuthClient client;
+
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
@@ -27,7 +45,26 @@ public class MainActivity extends AppCompatActivity implements FirstFragment.OnF
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+//        TwitterAuthClient authClient = new TwitterAuthClient();
+        Fabric.with(this, new Twitter(authConfig));
         setContentView(R.layout.activity_main);
+//        TwitterSession session = Twitter.getSessionManager().getActiveSession();
+
+        TwitterAuthClient twitterAuthClient = new TwitterAuthClient();
+        twitterAuthClient.authorize(this, new Callback<TwitterSession>() {
+            @Override
+            public void success(final Result<TwitterSession> result) {
+                final TwitterSession sessionData = result.data;
+                // Do something with the returned TwitterSession (contains the user token and secret)
+                Log.v("meh","result.data");
+            }
+
+            @Override
+            public void failure(final TwitterException e) {
+                // Do something on fail
+            }
+        });
 
         // Replace the ActionBar.
         toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/standings_box_frame_layout"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:paddingTop="10dp">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="51dp"
+        android:layout_height="49dp"
+        app:srcCompat="@android:drawable/star_big_off" />
+
+    <TextView
+        android:id="@+id/standings_team_name"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_marginLeft="60dp"
+        android:background="@drawable/bg_leagebox_top"
+        android:paddingLeft="5dp"
+        android:paddingTop="3dp"
+        android:text="Henry Singer"
+        android:textColor="@android:color/background_light"
+        android:textColorHint="@android:color/background_light" />
+
+    <TextView
+        android:id="@+id/standings_rank"
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:layout_marginLeft="276dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/bg_leaguebox_bot"
+        android:paddingTop="3dp"
+        android:text="RANK: 1"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_light" />
+
+    <TextView
+        android:id="@+id/standings_wlt"
+        android:layout_width="108dp"
+        android:layout_height="28dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/bg_leaguebox_bot"
+        android:paddingTop="3dp"
+        android:text="WLT 10-2-1"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_light" />
+
+    <TextView
+        android:id="@+id/standings_pts"
+        android:layout_width="108dp"
+        android:layout_height="28dp"
+        android:layout_marginLeft="168dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/bg_leaguebox_bot"
+        android:paddingTop="3dp"
+        android:text="PTS: 21"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_light" />
+</FrameLayout>

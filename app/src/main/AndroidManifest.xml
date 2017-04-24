@@ -13,6 +13,10 @@ package="com.pbhl.pbhl">
             </intent-filter>
         </activity>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="3c6274e41581265f1393d4e07206ef6d9c1a627c" />
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

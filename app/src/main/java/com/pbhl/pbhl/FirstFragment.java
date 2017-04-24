@@ -14,7 +14,7 @@ import android.widget.TextView;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FirstFragment.OnFragmentInteractionListener} interface
+ * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link FirstFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -27,7 +27,19 @@ public class FirstFragment extends Fragment {
 
 
     LinearLayout item;
-    String[] teams = {"Sunnys team", "Deeps Team", "Joes Team", "Buddys Team","Sunnys team", "Deeps Team", "Joes Team", "Buddys Team","Sunnys team", "Deeps Team", "Joes Team", "Buddys Team","Sunnys team", "Deeps Team", "Joes Team", "Buddys Team","Sunnys team", "Deeps Team", "Joes Team", "Buddys Team"};
+
+    Team T1 = new Team("HENRY SINGER");
+    Team T2 = new Team("ALL INDIA");
+    Team T3 = new Team("SUNNY VALLEY HOMES");
+    Team T4 = new Team("PIZZA 38");
+    Team T5 = new Team("ROYAL STAR PROPERTIES");
+    Team T6 = new Team("VACUUMS R US");
+    Team T7 = new Team("EYES ON 34TH");
+    Team T8 = new Team("SOUTHTOWN HYUNDAI");
+
+    Team[] teams = {T1,T2,T3,T4,T5,T6,T7,T8};
+
+//    String[] teams = {"Sunnys team", "Deeps Team", "Joes Team", "Buddys Team","Sunnys team", "Deeps Team", "Joes Team", "Buddys Team","Sunnys team", "Deeps Team", "Joes Team", "Buddys Team"};
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -87,9 +99,9 @@ public class FirstFragment extends Fragment {
             TextView left = (TextView) child.findViewById(R.id.left_team);
             TextView right = (TextView) child.findViewById(R.id.right_team);
 
-            left.setText(teams[i]);
+            left.setText(teams[i].getTeamName());
             i++;
-            right.setText(teams[i]);
+            right.setText(teams[i].getTeamName());
 
             item.addView(child);
         }

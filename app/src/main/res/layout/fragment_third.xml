@@ -1,5 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/twitter_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.pbhl.pbhl.ThirdFragment">
@@ -8,12 +9,14 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_leagebox_top">
 
         <LinearLayout
             android:id="@+id/twitter_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical"></LinearLayout>
+
     </ScrollView>
 </FrameLayout>

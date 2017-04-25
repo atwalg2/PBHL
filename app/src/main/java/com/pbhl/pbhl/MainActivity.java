@@ -1,5 +1,6 @@
 package com.pbhl.pbhl;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,17 +14,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.Twitter;
+import io.fabric.sdk.android.Fabric;
+
+import twitter4j.Status;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
-import java.io.Console;
+import java.util.List;
 
-import io.fabric.sdk.android.Fabric;
+import io.fabric.sdk.android.services.concurrency.AsyncTask;
+import twitter4j.conf.ConfigurationBuilder;
 
 /**
  * Created by Gurbz on 2017-04-13.
@@ -32,40 +36,79 @@ import io.fabric.sdk.android.Fabric;
 public class MainActivity extends AppCompatActivity implements FirstFragment.OnFragmentInteractionListener, SecondFragment.OnFragmentInteractionListener, ThirdFragment.OnFragmentInteractionListener {
 
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
-    private static final String TWITTER_KEY = "kgq5U0BNanDMNlBtQAw7myyV3";
-    private static final String TWITTER_SECRET = "3fhXEN35jdQDoPk0AZHoDKnYmZUDez6MDQ8mNZ6AYYeRcUeN7T";
-    TwitterAuthClient client;
+    private static final String TWITTER_CONSUMER_KEY = "j1qW8lZhpTqxnfO7HSq9eUHKF";
+    private static final String TWITTER_CONSUMER_SECRET = "Ah1AKbpxbdGy0O5aAjfTuxoTq8G8QoSJqNaYeWfopcA8xTZviK";
+
+    private List<twitter4j.Status> statuses = null;
+    TwitterAuthClient authClient;
 
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
-
     private ActionBarDrawerToggle drawerToggle;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-//        TwitterAuthClient authClient = new TwitterAuthClient();
-        Fabric.with(this, new Twitter(authConfig));
         setContentView(R.layout.activity_main);
-//        TwitterSession session = Twitter.getSessionManager().getActiveSession();
 
-        TwitterAuthClient twitterAuthClient = new TwitterAuthClient();
-        twitterAuthClient.authorize(this, new Callback<TwitterSession>() {
+        // AsyncTask For Getting ID's
+        new AsyncTask<Void, Void, List<Status>>(){
             @Override
-            public void success(final Result<TwitterSession> result) {
-                final TwitterSession sessionData = result.data;
-                // Do something with the returned TwitterSession (contains the user token and secret)
-                Log.v("meh","result.data");
-            }
+            protected List<twitter4j.Status> doInBackground(Void... voids) {
+//                List<twitter4j.Status> statuses = null;
 
-            @Override
-            public void failure(final TwitterException e) {
-                // Do something on fail
-            }
-        });
+                TwitterHandles handles = TwitterHandles.getInstance();
 
+                ConfigurationBuilder builder=new ConfigurationBuilder();
+                builder.setApplicationOnlyAuthEnabled(true);
+                // setup
+                twitter4j.Twitter twitter = new TwitterFactory(builder.build()).getInstance();
+                // exercise & verify
+                twitter.setOAuthConsumer(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET);
+
+                try {
+                    twitter.getOAuth2Token();
+                    statuses = twitter.getUserTimeline("PBHL_EDM");
+//                    long[] temp = new long[statuses.size()];
+//                    for(int i=0;i<statuses.size(); i++){
+//                        temp[i] = statuses.get(i);
+//                    }
+                    handles.setPBHLOfficial(statuses);
+
+                    statuses = twitter.getUserTimeline("PBHLBobMcKenzie");
+//                    long[] temp1 = new long[statuses.size()];
+//                    for(int i=0;i<statuses.size(); i++){
+//                        temp1[i] = statuses.get(i);
+//                    }
+                    handles.setBobMackenzie(statuses);
+
+                    statuses = twitter.getUserTimeline("FriedmanPBHL");
+//                    long[] temp2 = new long[statuses.size()];
+//                    for(int i=0;i<statuses.size(); i++){
+//                        temp2[i] = statuses.get(i);
+//                    }
+                    handles.setElliotFriedman(statuses);
+
+
+
+                } catch (TwitterException e) {
+                    e.printStackTrace();
+                }
+
+                Log.v("HERE WE DID IT OMG..",Long.toString(statuses.get(0).getId()));
+                Log.v("HERE WE DID IT OMG..",statuses.get(0).getText());
+                Log.v("HERE WE DID IT OMG..",statuses.get(0).getUser().getName());
+                Log.v("HERE WE DID IT OMG..",statuses.get(0).getHashtagEntities().getClass().getName());
+//                Log.v("HERE WE DID IT OMG..",statuses.get(0).getMediaEntities());
+                return statuses;
+            }
+        }.execute(null, null, null);
+
+
+        //---------------------------------------------------------------
         // Replace the ActionBar.
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,11 +118,19 @@ public class MainActivity extends AppCompatActivity implements FirstFragment.OnF
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         nvDrawer = (NavigationView) findViewById(R.id.nvView);
         setupDrawerContent(nvDrawer);
-//        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = setupDrawerToggle();
         mDrawer.addDrawerListener(drawerToggle);
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Pass the activity result to the auth client.
+        authClient.onActivityResult(requestCode, resultCode, data);
+    }
+
 
     private ActionBarDrawerToggle setupDrawerToggle() {
         // NOTE: Make sure you pass in a valid toolbar reference.  ActionBarDrawToggle() does not require it

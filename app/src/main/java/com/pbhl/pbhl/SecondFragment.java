@@ -30,14 +30,14 @@ public class SecondFragment extends Fragment {
 
     LinearLayout item;
 
-    Team T1 = new Team("HENRY SINGER");
-    Team T2 = new Team("ALL INDIA");
-    Team T3 = new Team("SUNNY VALLEY HOMES");
-    Team T4 = new Team("PIZZA 38");
-    Team T5 = new Team("ROYAL STAR PROPERTIES");
-    Team T6 = new Team("VACUUMS R US");
-    Team T7 = new Team("EYES ON 34TH");
-    Team T8 = new Team("SOUTHTOWN HYUNDAI");
+    Team T1 = new Team("Henry Singer");
+    Team T2 = new Team("All India");
+    Team T3 = new Team("SunnyValleyHomes");
+    Team T4 = new Team("Pizza 38");
+    Team T5 = new Team("RoyalStarPropert");
+    Team T6 = new Team("VacuumsRUS");
+    Team T7 = new Team("EyesOn34th");
+    Team T8 = new Team("SouthTownHyundai");
 
     Team[] teams = {T1,T2,T3,T4,T5,T6,T7,T8};
 

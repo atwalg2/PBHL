@@ -20,3 +20,10 @@ package="com.pbhl.pbhl">
 
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
+
+    <!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+<!--                <data android:scheme="oauth" android:host="https://twitter.com/oauth/authenticate"/>-->
+<!--            </intent-filter>-->

@@ -31,9 +31,12 @@ public class TwitterHandles {
     private List<twitter4j.Status> PBHLOfficial;  //PBHL_EDM
     private Bitmap[] pbhlArr;
     private List<twitter4j.Status> BobMackenzie;  //PBHL_BOB_MACKENZIE
-
     private List<twitter4j.Status> ElliotFriedman;
     private Bitmap[] elliotArr;
+
+    private Bitmap[] profilePics; // PBHL, BOB, ELLIOT
+
+    private int check = 0;
 
     public static TwitterHandles getInstance() {
         return ourInstance;
@@ -44,15 +47,24 @@ public class TwitterHandles {
 
     public void setPBHLOfficial(final List<Status> PBHLOfficial) {
         this.PBHLOfficial = PBHLOfficial;
-
+        if (check == 0){
+            profilePics = new Bitmap[3];
+        }
+        check++;
         new AsyncTask<Void,Void,Void>() {
 
             @Override
             protected Void doInBackground(Void... voids) {
+                try {
+                    profilePics[0] = BitmapFactory.decodeStream((InputStream)new URL(PBHLOfficial.get(0).getUser().getProfileImageURL()).getContent());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 //                elliotArr = new Bitmap[ElliotFriedman.size()];
                 pbhlArr = new Bitmap[PBHLOfficial.size()];
                 for(int x=0; x<PBHLOfficial.size();x++){
                     MediaEntity[] media = PBHLOfficial.get(x).getMediaEntities();
+
                     if (media.length != 0){
                         try {
                             Bitmap bmp = BitmapFactory.decodeStream((InputStream)new URL(media[0].getMediaURL()).getContent());
@@ -88,6 +100,7 @@ public class TwitterHandles {
                     MediaEntity[] media = ElliotFriedman.get(x).getMediaEntities();
                     if (media.length != 0){
                         try {
+
                             Bitmap bmp = BitmapFactory.decodeStream((InputStream)new URL(media[0].getMediaURL()).getContent());
 
                             Log.v("HELLO", media[0].getMediaURL());
@@ -124,38 +137,8 @@ public class TwitterHandles {
         return pbhlArr;
     }
 
-    private InputStream sendingGetRequest(String site) throws Exception {
-            final String USER_AGENT = "Mozilla/5.0";
-
-
-            String urlString = site;
-            URL url = new URL(urlString);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-
-            // By default it is GET request
-            con.setRequestMethod("GET");
-
-           //add request header
-            con.setRequestProperty("User-Agent", USER_AGENT);
-
-            int responseCode = con.getResponseCode();
-            System.out.println("Sending get request : " + url);
-            System.out.println("Response code : " + responseCode);
-
-
-            return con.getInputStream();
-            // Reading response from input Stream
-//            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-//            String output;
-//            StringBuffer response = new StringBuffer();
-//
-//            while ((output = in.readLine()) != null) {
-//            response.append(output);
-//            }
-//            in.close();
-//
-//            //printing result from response
-//            System.out.println(response.toString());
+    public Bitmap getPbhlProfile(){
+        return profilePics[0];
     }
 
 }

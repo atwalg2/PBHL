@@ -2,6 +2,7 @@ package com.pbhl.pbhl;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.media.ImageReader;
@@ -16,6 +17,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -62,6 +64,7 @@ public class ThirdFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private ImageButton full;
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private static final String TWITTER_KEY = "j1qW8lZhpTqxnfO7HSq9eUHKF";
     private static final String TWITTER_SECRET = "Ah1AKbpxbdGy0O5aAjfTuxoTq8G8QoSJqNaYeWfopcA8xTZviK";
@@ -111,6 +114,7 @@ public class ThirdFragment extends Fragment {
 //        Fabric.with(getActivity(), new com.twitter.sdk.android.Twitter(authConfig));
         // TODO: Use a more specific parent
         View root = inflater.inflate(R.layout.fragment_third, container, false);
+        full = (ImageButton) root.findViewById(R.id.full_screen_tweet);
 
         TwitterHandles handles = TwitterHandles.getInstance();
         List<Status> Mack = handles.getBobMackenzie();
@@ -130,14 +134,42 @@ public class ThirdFragment extends Fragment {
 
                 MediaEntity[] media = PBHL.get(i).getMediaEntities(); //get the media entities from the status
 
+                // LOAD PROFILE PICS
+                ImageView prof = (ImageView) child.findViewById(R.id.profile);
+                Bitmap pbhlpic =  handles.getPbhlProfile();
+                pbhlpic.setDensity(Bitmap.DENSITY_NONE);
+                prof.setImageDrawable(new BitmapDrawable(pbhlpic));
+
+
                 if(media.length != 0){
-                    ImageView pic = (ImageView) child.findViewById(R.id.tweet_image);
+                    ImageButton pic = (ImageButton) child.findViewById(R.id.tweet_image);
+
 //                    Log.v("PICTURE:-----:",Integer.toString(i));
 
 //                    pic.setImageBitmap(EPics[i]);
 //                    Log.v("CHECKER  :::",Integer.toString(PPics[i].getWidth()));
                     pic.setPadding(0,500,0,0);
-                    pic.setImageBitmap(PPics[i]);
+//                    PPics[i]
+//                    pic.setBack
+                    PPics[i].setDensity(Bitmap.DENSITY_NONE);
+                    Drawable d = new BitmapDrawable(PPics[i]);
+
+//                    pic.setImageBitmap(PPics[i]);
+                    pic.getLayoutParams().height = 950;
+                    pic.getLayoutParams().width = 800;
+                    pic.setBackground(d);
+
+                    pic.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ImageButton but = (ImageButton) v;
+
+                            full.setImageDrawable(but.getDrawable());
+                            full.setVisibility(View.VISIBLE);
+//                            ImageButton full = (ImageButton) child.findViewById(R.id.full_screen_tweet);
+                        }
+                    });
+//                    pic.callOnClick();
 //                    pic.setMaxHeight(180);
                 }
 
@@ -155,6 +187,7 @@ public class ThirdFragment extends Fragment {
 
         return root;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

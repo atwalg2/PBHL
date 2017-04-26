@@ -72,24 +72,12 @@ public class MainActivity extends AppCompatActivity implements FirstFragment.OnF
                 try {
                     twitter.getOAuth2Token();
                     statuses = twitter.getUserTimeline("PBHL_EDM");
-//                    long[] temp = new long[statuses.size()];
-//                    for(int i=0;i<statuses.size(); i++){
-//                        temp[i] = statuses.get(i);
-//                    }
                     handles.setPBHLOfficial(statuses);
 
                     statuses = twitter.getUserTimeline("PBHLBobMcKenzie");
-//                    long[] temp1 = new long[statuses.size()];
-//                    for(int i=0;i<statuses.size(); i++){
-//                        temp1[i] = statuses.get(i);
-//                    }
                     handles.setBobMackenzie(statuses);
 
                     statuses = twitter.getUserTimeline("FriedmanPBHL");
-//                    long[] temp2 = new long[statuses.size()];
-//                    for(int i=0;i<statuses.size(); i++){
-//                        temp2[i] = statuses.get(i);
-//                    }
                     handles.setElliotFriedman(statuses);
 
 
@@ -102,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements FirstFragment.OnF
                 Log.v("HERE WE DID IT OMG..",statuses.get(0).getText());
                 Log.v("HERE WE DID IT OMG..",statuses.get(0).getUser().getName());
                 Log.v("HERE WE DID IT OMG..",statuses.get(0).getHashtagEntities().getClass().getName());
-//                Log.v("HERE WE DID IT OMG..",statuses.get(0).getMediaEntities());
                 return statuses;
             }
         }.execute(null, null, null);

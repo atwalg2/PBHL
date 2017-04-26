@@ -5,40 +5,76 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/twitter_name"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="34dp"
-        android:text="TextView"
-        android:textColor="@color/tw__composer_white"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-    <ImageView
+        <ImageView
+            android:id="@+id/profile"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/tw__app_info_layout_border" />
+
+        <TextView
+            android:id="@+id/twitter_name"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:paddingLeft="7dp"
+            android:text="TextView"
+            android:textAllCaps="true"
+            android:textColor="@color/tw__composer_black"
+            android:textSize="20sp"
+            android:textStyle="italic" />
+
+    </LinearLayout>
+
+    <ImageButton
         android:id="@+id/tweet_image"
-        android:layout_width="match_parent"
+        android:layout_width="340dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="150dp"
         android:layout_marginTop="5dp"
-        android:maxHeight="160dp"
-        android:scaleType="centerCrop" />
+        android:background="@color/tw__transparent"
+        android:cropToPadding="false"
+        android:maxHeight="200dp"
+        android:scaleType="centerCrop"
+        android:theme="@style/Base.V12.Widget.AppCompat.EditText" />
+
 
     <TextView
         android:id="@+id/twitter_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:paddingLeft="5dp"
+        android:fontFamily="sans-serif"
+        android:paddingLeft="7dp"
         android:paddingRight="5dp"
         android:text="TextView"
-        android:textColor="@color/tw__composer_white"
-        android:textSize="16sp" />
+        android:textColor="@color/tw__composer_black"
+        android:textSize="16sp"
+        android:typeface="sans" />
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="370dp"
-        android:layout_height="2dp"
-        android:layout_marginLeft="6dp"
-        android:layout_marginTop="10dp"
-        app:srcCompat="@drawable/tweet_divider" />
+        android:layout_width="350dp"
+        android:layout_height="22dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="20dp"
+        android:paddingTop="20dp"
+        app:srcCompat="@color/tw__composer_black" />
 
 </LinearLayout>
+
+<!--<ImageView-->
+<!--android:id="@+id/tweet_image_id"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:layout_marginLeft="2dp"-->
+<!--android:layout_marginTop="5dp"-->
+<!--android:maxHeight="350dp" />-->

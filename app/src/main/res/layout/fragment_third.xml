@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/twitter_frame"
     android:layout_width="match_parent"
@@ -10,7 +11,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_leagebox_top">
+        android:layout_marginTop="25dp"
+        android:background="@drawable/tw__login_btn">
 
         <LinearLayout
             android:id="@+id/twitter_container"
@@ -19,4 +21,15 @@
             android:orientation="vertical"></LinearLayout>
 
     </ScrollView>
+
+    <ImageButton
+        android:id="@+id/full_screen_tweet"
+        android:layout_width="match_parent"
+        android:layout_height="570dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/tw__btn_composer_tweet"
+        android:paddingTop="60dp"
+        android:scaleType="centerCrop"
+        android:visibility="invisible"
+        app:srcCompat="@mipmap/ic_launcher" />
 </FrameLayout>

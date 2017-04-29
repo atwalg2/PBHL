@@ -9,6 +9,8 @@ import android.media.ImageReader;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -135,7 +138,7 @@ public class ThirdFragment extends Fragment {
                 MediaEntity[] media = PBHL.get(i).getMediaEntities(); //get the media entities from the status
 
                 // LOAD PROFILE PICS
-                ImageView prof = (ImageView) child.findViewById(R.id.profile);
+                RoundedImageView prof = (RoundedImageView) child.findViewById(R.id.profile);
                 Bitmap pbhlpic =  handles.getPbhlProfile();
                 pbhlpic.setDensity(Bitmap.DENSITY_NONE);
                 prof.setImageDrawable(new BitmapDrawable(pbhlpic));
@@ -153,8 +156,7 @@ public class ThirdFragment extends Fragment {
 //                    pic.setBack
                     PPics[i].setDensity(Bitmap.DENSITY_NONE);
                     Drawable d = new BitmapDrawable(PPics[i]);
-
-//                    pic.setImageBitmap(PPics[i]);
+//                    RoundedBitmapDrawable roundBit = RoundedBitmapDrawableFactory.create(getResources(), )
                     pic.getLayoutParams().height = 950;
                     pic.getLayoutParams().width = 800;
                     pic.setBackground(d);
@@ -166,15 +168,10 @@ public class ThirdFragment extends Fragment {
 
                             full.setImageDrawable(but.getDrawable());
                             full.setVisibility(View.VISIBLE);
-//                            ImageButton full = (ImageButton) child.findViewById(R.id.full_screen_tweet);
                         }
                     });
-//                    pic.callOnClick();
-//                    pic.setMaxHeight(180);
-                }
 
-//                name.setText(Elliot.get(i).getUser().getName());
-//                desc.setText(Elliot.get(i).getText());
+                }
 
                 name.setText(PBHL.get(i).getUser().getName());
                 desc.setText(PBHL.get(i).getText());

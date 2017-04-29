@@ -39,8 +39,6 @@ public class FirstFragment extends Fragment {
 
     Team[] teams = {T1,T2,T3,T4,T5,T6,T7,T8};
 
-//    String[] teams = {"Sunnys team", "Deeps Team", "Joes Team", "Buddys Team","Sunnys team", "Deeps Team", "Joes Team", "Buddys Team","Sunnys team", "Deeps Team", "Joes Team", "Buddys Team"};
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;

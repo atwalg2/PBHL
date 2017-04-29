@@ -37,6 +37,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: '/libs')
     compile 'org.twitter4j:twitter4j-core:4.0.5'
+    compile 'com.makeramen:roundedimageview:2.3.0'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -49,4 +50,5 @@ dependencies {
         transitive = true;
     }
     compile files('libs/twitter4j.jar')
+    compile files('libs/roundedimageview-2.3.0-sources.jar')
 }

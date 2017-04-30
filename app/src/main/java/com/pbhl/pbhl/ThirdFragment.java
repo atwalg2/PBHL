@@ -2,52 +2,23 @@ package com.pbhl.pbhl;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.media.ImageReader;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.makeramen.roundedimageview.RoundedImageView;
 import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.identity.TwitterAuthClient;
-import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.tweetui.TweetUtils;
-import com.twitter.sdk.android.tweetui.TweetView;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.services.concurrency.AsyncTask;
-import twitter4j.MediaEntity;
-import twitter4j.Status;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -71,7 +42,11 @@ public class ThirdFragment extends Fragment {
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private static final String TWITTER_KEY = "j1qW8lZhpTqxnfO7HSq9eUHKF";
     private static final String TWITTER_SECRET = "Ah1AKbpxbdGy0O5aAjfTuxoTq8G8QoSJqNaYeWfopcA8xTZviK";
-    LinearLayout item;
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    FrameLayout item;
 
     private OnFragmentInteractionListener mListener;
 
@@ -113,74 +88,19 @@ public class ThirdFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-//        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET);
-//        Fabric.with(getActivity(), new com.twitter.sdk.android.Twitter(authConfig));
-        // TODO: Use a more specific parent
+
         View root = inflater.inflate(R.layout.fragment_third, container, false);
         full = (ImageButton) root.findViewById(R.id.full_screen_tweet);
 
-        TwitterHandles handles = TwitterHandles.getInstance();
-        List<Status> Mack = handles.getBobMackenzie();
-        List<Status> Elliot = handles.getElliotFriedman();
-        Bitmap[] EPics = handles.getElliotArr();
-        List<Status> PBHL = handles.getPBHLOfficial();
-        Bitmap[] PPics = handles.getPbhlArr();
-//        Log.v("BITMAP ARR SIZE:-----:",Integer.toString(PPics.length));
+        item = (FrameLayout) root.findViewById(R.id.twitter_frame);
+        mRecyclerView = (RecyclerView) root.findViewById(R.id.tweet_recycler);
+        mRecyclerView.setHasFixedSize(true);
 
+        Context ctx =getActivity().getApplicationContext();
+        TwitterAdapter adapter = new TwitterAdapter(ctx);
+        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
-        item = (LinearLayout) root.findViewById(R.id.twitter_container);
-
-            for(int i=0; i<PBHL.size();i++) {
-                View child = getActivity().getLayoutInflater().inflate(R.layout.tweet_box, null);
-                TextView name = (TextView) child.findViewById(R.id.twitter_name);
-                TextView desc = (TextView) child.findViewById(R.id.twitter_text);
-
-                MediaEntity[] media = PBHL.get(i).getMediaEntities(); //get the media entities from the status
-
-                // LOAD PROFILE PICS
-                RoundedImageView prof = (RoundedImageView) child.findViewById(R.id.profile);
-                Bitmap pbhlpic =  handles.getPbhlProfile();
-                pbhlpic.setDensity(Bitmap.DENSITY_NONE);
-                prof.setImageDrawable(new BitmapDrawable(pbhlpic));
-
-
-                if(media.length != 0){
-                    ImageButton pic = (ImageButton) child.findViewById(R.id.tweet_image);
-
-//                    Log.v("PICTURE:-----:",Integer.toString(i));
-
-//                    pic.setImageBitmap(EPics[i]);
-//                    Log.v("CHECKER  :::",Integer.toString(PPics[i].getWidth()));
-                    pic.setPadding(0,500,0,0);
-//                    PPics[i]
-//                    pic.setBack
-                    PPics[i].setDensity(Bitmap.DENSITY_NONE);
-                    Drawable d = new BitmapDrawable(PPics[i]);
-//                    RoundedBitmapDrawable roundBit = RoundedBitmapDrawableFactory.create(getResources(), )
-                    pic.getLayoutParams().height = 950;
-                    pic.getLayoutParams().width = 800;
-                    pic.setBackground(d);
-
-                    pic.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ImageButton but = (ImageButton) v;
-
-                            full.setImageDrawable(but.getDrawable());
-                            full.setVisibility(View.VISIBLE);
-                        }
-                    });
-
-                }
-
-                name.setText(PBHL.get(i).getUser().getName());
-                desc.setText(PBHL.get(i).getText());
-
-
-
-
-                item.addView(child);
-            }
 
         return root;
     }
@@ -224,4 +144,21 @@ public class ThirdFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public Bitmap StringToBitMap(String encodedString){
+        try {
+            byte [] encodeByte = Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch(Exception e) {
+            e.getMessage();
+            return null;
+        }
+    }
+
+
+
+
+
+
 }

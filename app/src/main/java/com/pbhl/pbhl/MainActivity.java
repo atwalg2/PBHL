@@ -1,5 +1,6 @@
 package com.pbhl.pbhl;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -24,6 +25,15 @@ import twitter4j.TwitterFactory;
 
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 
 import io.fabric.sdk.android.services.concurrency.AsyncTask;
@@ -46,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements FirstFragment.OnF
     private Toolbar toolbar;
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
-
+    private JSONObject Json = new JSONObject();
 
 
     @Override
@@ -54,43 +64,18 @@ public class MainActivity extends AppCompatActivity implements FirstFragment.OnF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         // AsyncTask For Getting ID's
-        new AsyncTask<Void, Void, List<Status>>(){
+        new AsyncTask<Void, Void, Void>(){
             @Override
-            protected List<twitter4j.Status> doInBackground(Void... voids) {
-//                List<twitter4j.Status> statuses = null;
+            protected Void doInBackground(Void... voids) {
 
-                TwitterHandles handles = TwitterHandles.getInstance();
-
-                ConfigurationBuilder builder=new ConfigurationBuilder();
-                builder.setApplicationOnlyAuthEnabled(true);
-                // setup
-                twitter4j.Twitter twitter = new TwitterFactory(builder.build()).getInstance();
-                // exercise & verify
-                twitter.setOAuthConsumer(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET);
-
-                try {
-                    twitter.getOAuth2Token();
-                    statuses = twitter.getUserTimeline("PBHL_EDM");
-                    handles.setPBHLOfficial(statuses);
-
-                    statuses = twitter.getUserTimeline("PBHLBobMcKenzie");
-                    handles.setBobMackenzie(statuses);
-
-                    statuses = twitter.getUserTimeline("FriedmanPBHL");
-                    handles.setElliotFriedman(statuses);
+                TwitterFirstStart();
 
 
 
-                } catch (TwitterException e) {
-                    e.printStackTrace();
-                }
 
-                Log.v("HERE WE DID IT OMG..",Long.toString(statuses.get(0).getId()));
-                Log.v("HERE WE DID IT OMG..",statuses.get(0).getText());
-                Log.v("HERE WE DID IT OMG..",statuses.get(0).getUser().getName());
-                Log.v("HERE WE DID IT OMG..",statuses.get(0).getHashtagEntities().getClass().getName());
-                return statuses;
+                return null;
             }
         }.execute(null, null, null);
 
@@ -109,6 +94,8 @@ public class MainActivity extends AppCompatActivity implements FirstFragment.OnF
         mDrawer.addDrawerListener(drawerToggle);
 
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -205,5 +192,57 @@ public class MainActivity extends AppCompatActivity implements FirstFragment.OnF
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    private void TwitterFirstStart(){
+        TwitterHandles handles = TwitterHandles.getInstance();
+
+        ConfigurationBuilder builder=new ConfigurationBuilder();
+        builder.setApplicationOnlyAuthEnabled(true);
+        // setup
+        twitter4j.Twitter twitter = new TwitterFactory(builder.build()).getInstance();
+        // exercise & verify
+        twitter.setOAuthConsumer(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET);
+
+        try {
+            twitter.getOAuth2Token();
+            statuses = twitter.getUserTimeline("PBHL_EDM");
+//            handles.setPBHLOfficial(statuses);
+            statuses.size();
+            Log.i(" ------ LAST: ", Integer.toString(statuses.size()));
+            for( int x = 0; x < statuses.size(); x++){
+                Status status = statuses.get(x);
+                TweetInfo tweetI = new TweetInfo(status);
+                tweetI.addToDatabase(getApplicationContext());
+
+            }
+
+//            statuses = twitter.getUserTimeline("PBHLBobMcKenzie");
+//            handles.setBobMackenzie(statuses);
+//
+//            statuses = twitter.getUserTimeline("FriedmanPBHL");
+//            handles.setElliotFriedman(statuses);
+
+        } catch (TwitterException | IOException e) {
+            e.printStackTrace();
+        }
+
+        Log.v("HERE WE DID IT OMG..",Long.toString(statuses.get(0).getId()));
+        Log.v("HERE WE DID IT OMG..",statuses.get(0).getText());
+        Log.v("HERE WE DID IT OMG..",statuses.get(0).getUser().getName());
+        Log.v("HERE WE DID IT OMG..",statuses.get(0).getHashtagEntities().getClass().getName());
+    }
+
+    private void storeString(String str){ //SEND IT JSONS STRINGIFIED
+        String FILENAME = "PermanentStorageFile";
+
+        try {
+            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            fos.write(str.getBytes());
+            fos.close();
+        }
+        catch(IOException e){
+
+        }
     }
 }

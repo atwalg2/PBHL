@@ -8,19 +8,13 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <ScrollView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/tweet_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/tw__login_btn">
+        android:scrollbars="vertical">
 
-        <LinearLayout
-            android:id="@+id/twitter_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"></LinearLayout>
-
-    </ScrollView>
+    </android.support.v7.widget.RecyclerView>
 
     <ImageButton
         android:id="@+id/full_screen_tweet"
@@ -32,4 +26,5 @@
         android:scaleType="centerCrop"
         android:visibility="invisible"
         app:srcCompat="@mipmap/ic_launcher" />
+
 </FrameLayout>

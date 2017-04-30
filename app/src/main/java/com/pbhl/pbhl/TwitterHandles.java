@@ -6,7 +6,10 @@ import android.graphics.drawable.Drawable;
 import android.renderscript.ScriptGroup;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.twitter.sdk.android.core.models.Image;
+
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -30,11 +33,13 @@ public class TwitterHandles {
     private static final TwitterHandles ourInstance = new TwitterHandles();
     private List<twitter4j.Status> PBHLOfficial;  //PBHL_EDM
     private Bitmap[] pbhlArr;
+    private TweetInfo[] pbhlTweetArr;
     private List<twitter4j.Status> BobMackenzie;  //PBHL_BOB_MACKENZIE
     private List<twitter4j.Status> ElliotFriedman;
     private Bitmap[] elliotArr;
-
     private Bitmap[] profilePics; // PBHL, BOB, ELLIOT
+
+    Gson gson = new Gson();
 
     private int check = 0;
 
@@ -45,12 +50,17 @@ public class TwitterHandles {
     private TwitterHandles() {
     }
 
+    public void reloadTwitter(String str){
+
+    }
+
     public void setPBHLOfficial(final List<Status> PBHLOfficial) {
         this.PBHLOfficial = PBHLOfficial;
         if (check == 0){
             profilePics = new Bitmap[3];
         }
         check++;
+
         new AsyncTask<Void,Void,Void>() {
 
             @Override
@@ -139,6 +149,18 @@ public class TwitterHandles {
 
     public Bitmap getPbhlProfile(){
         return profilePics[0];
+    }
+
+    public class TweetInfo{
+        protected String name;
+        protected Bitmap profile;
+        protected String TweetText;
+        protected Bitmap TweetImage;
+    }
+
+    public class TweetList{
+        public List<TweetInfo> Tweets;
+
     }
 
 }

@@ -74,7 +74,6 @@ public class FirstFragment extends Fragment {
 //        FrameLayout myBox = (FrameLayout) getLayoutInflater();
 //        FrameLayout myBox = (FrameLayout) getView().findViewById(R.id.league_box_frame_layout);
 //        TextView text = (TextView) myBox.findViewById(R.id.left_team);
-//        text.setText("FUCK");
 
 //        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/abc.ttf");
 //        tx.setTypeface(custom_font);
